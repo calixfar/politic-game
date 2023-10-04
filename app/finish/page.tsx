@@ -10,8 +10,12 @@ const gifs = {
 }
 
 const PageFinish = () => {
-  const { session } = useSession()
+  const { session, resetSession } = useSession()
   const result = session.points === 6
+
+  const handleStartOverClick = () => {
+    resetSession(true)
+  }
 
   return (
     <div className="w-full p-4 flex flex-col justify-center">
@@ -37,6 +41,10 @@ const PageFinish = () => {
           className="block mx-auto w-auto mt-5"
         />
       </div>
+      <button
+        className="mt-3 mx-auto block text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-auto px-5 py-2.5 text-center outline-green-300"
+        onClick={handleStartOverClick}
+      >Empezar de nuevo</button>
     </div>
   )
 }

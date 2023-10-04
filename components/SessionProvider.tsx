@@ -1,7 +1,7 @@
 'use client'
 
-import { useRouter, usePathname } from 'next/navigation'
-import React, { PropsWithChildren, useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import React, { PropsWithChildren, useState } from 'react'
 
 export interface Session {
   name: string,
@@ -12,18 +12,20 @@ export interface ISessionContext {
   session: Session,
   changeSessionState: (partialSession: Partial<Session>) => void
   incrementPoints: () => void
+  resetSession: (redirectHome?: boolean) => void
+}
+
+const INITIAL_STATE = {
+  name: '',
+  points: 0
 }
 
 export const SessionContext = React.createContext<ISessionContext>({} as ISessionContext)
 
 const SessionProvider = ({ children }: PropsWithChildren) => {
-  const [session, setSession] = useState({
-    name: '',
-    points: 0
-  })
-
+  const [session, setSession] = useState({...INITIAL_STATE})
   const { replace } = useRouter()
-  const pathname = usePathname()
+  
 
   const changeSessionState = (partialSession: Partial<Session>) => {
     setSession((previous) => ({
@@ -39,17 +41,20 @@ const SessionProvider = ({ children }: PropsWithChildren) => {
     }))
   }
 
-  useEffect(() => {
-    if (!session.name && pathname !== '/') {
+  const resetSession = (redirectHome = false) => {
+    setSession({...INITIAL_STATE})
+
+    if (redirectHome) {
       replace('/')
     }
-  }, [pathname, session.name])
+  }
 
   return (
     <SessionContext.Provider value={{
       session,
       changeSessionState,
-      incrementPoints
+      incrementPoints,
+      resetSession
     }}>
       {children}
     </SessionContext.Provider>

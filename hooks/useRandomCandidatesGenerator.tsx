@@ -24,10 +24,8 @@ const useRandomCandidatesGenerator = ({
 }: Props = {}) => {
   const [count, setCount] = useState(1)
   const [generatedCandidate, setGeneratedCandidate] = useState<CandidateOption>(generateRandomCandidate())
-  console.log({count})
 
   const generate = () => {
-    console.log({ count, interval, validation: count === interval })
     if (count + 1 === interval) {
       setGeneratedCandidate(candidate)
       setCount(1)
