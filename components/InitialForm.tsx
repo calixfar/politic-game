@@ -38,6 +38,7 @@ const InitialForm = () => {
       />
       <button 
         type="submit"
+        id="form-initial"
         className="mt-3 mx-auto block text-white bg-green-500 hover:bg-green-600 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-auto px-5 py-2.5 text-center outline-green-300"
       >COMENZAR!</button>
     </form>
