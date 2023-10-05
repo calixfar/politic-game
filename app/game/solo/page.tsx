@@ -6,7 +6,17 @@ import SoloCard from '@/components/SoloCard'
 import useGameValidtor from '@/hooks/useGameValidator'
 import useRandomCandidatesGenerator from '@/hooks/useRandomCandidatesGenerator'
 import useSession from '@/hooks/useSession'
-import { useEffect, useRef, useState } from 'react'
+import { CSSProperties, useCallback, useEffect, useRef, useState } from 'react'
+import ReactCanvasConfetti from 'react-canvas-confetti'
+
+const canvasStyles: CSSProperties = {
+  position: 'fixed',
+  pointerEvents: 'none',
+  width: '100%',
+  height: '100%',
+  top: 0,
+  left: 0
+}
 
 const PageSoloGame = () => {
   const { incrementAttemps, attemps } = useGameValidtor({ nextStep: '/finish' })
@@ -15,9 +25,27 @@ const PageSoloGame = () => {
   const [isLoading, setIsLoading] = useState(false)
   const attempsCopy = useRef(attemps)
   const limitAttemptsReached = attemps >= 6
+  const refAnimationInstance = useRef<confetti.CreateTypes | null>(null)
+
+  const getInstance = useCallback((instance: confetti.CreateTypes | null) => {
+    refAnimationInstance.current = instance
+  }, [])
+
+  const fireConfetti = () => {
+    if (!refAnimationInstance.current) {
+      return
+    }
+
+    refAnimationInstance.current({
+      particleCount: 100,
+      spread: 120,
+      ticks: 100
+    })
+  }
 
   const handleSelectButton = (selection: boolean) => {
     if ((isDefaultCandidate && selection) || (!isDefaultCandidate && !selection)) {
+      fireConfetti()
       incrementPoints()
     }
 
@@ -51,6 +79,7 @@ const PageSoloGame = () => {
         />
         <FormWichIsRight onSelectButton={handleSelectButton} />
       </div>
+      <ReactCanvasConfetti refConfetti={getInstance} style={canvasStyles} />
     </div>
   )
 }
