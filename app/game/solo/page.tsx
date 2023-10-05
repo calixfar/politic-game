@@ -9,7 +9,7 @@ import useSession from '@/hooks/useSession'
 import { useEffect, useRef, useState } from 'react'
 
 const PageSoloGame = () => {
-  const { validateAnwser, incrementAttemps, attemps } = useGameValidtor({ nextStep: '/finish' })
+  const { incrementAttemps, attemps } = useGameValidtor({ nextStep: '/finish' })
   const { generate, generatedCandidate, isDefaultCandidate } = useRandomCandidatesGenerator()
   const { incrementPoints, session } = useSession()
   const [isLoading, setIsLoading] = useState(false)
@@ -17,17 +17,11 @@ const PageSoloGame = () => {
   const limitAttemptsReached = attemps >= 6
 
   const handleSelectButton = (selection: boolean) => {
-    if (isDefaultCandidate) {
-      validateAnwser(generatedCandidate)
-
-      return
+    if ((isDefaultCandidate && selection) || (!isDefaultCandidate && !selection)) {
+      incrementPoints()
     }
 
     incrementAttemps()
-
-    if (!selection) {
-      incrementPoints()
-    }
   }
 
   useEffect(() => {

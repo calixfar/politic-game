@@ -28,11 +28,11 @@ const SoloCard = ({
   }, [imageUrl])
 
   return (
-    <div className="flex justify-between border-2 border-gray-400 rounded p-4 max-w-full h-full">
+    <div className="flex justify-between border-2 border-gray-400 rounded p-4 max-w-full h-full" style={{height: `${height}px`}}>
       <Image
         alt="candidate-logo"
         src={imageUrl}
-        className="w-1/2 h-full"
+        className="w-1/2 h-full block"
         width={width}
         height={height}
         onLoadingComplete={() => setIsLoading(false)}

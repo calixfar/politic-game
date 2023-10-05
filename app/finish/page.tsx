@@ -23,7 +23,7 @@ const PageFinish = () => {
         <span className="green_gradient">{session.name}</span>
         &nbsp; obtuviste un puntaje de:
         <br />
-        <span className="green_gradient text-4xl">{session.points} Puntos</span>
+        <span className="green_gradient text-4xl">{session.points}/6 Puntos</span>
       </p>
       <div className="w-full mt-3 container-result__images">
         <Image
