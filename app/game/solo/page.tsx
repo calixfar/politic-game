@@ -6,6 +6,8 @@ import SoloCard from '@/components/SoloCard'
 import useGameValidtor from '@/hooks/useGameValidator'
 import useRandomCandidatesGenerator from '@/hooks/useRandomCandidatesGenerator'
 import useSession from '@/hooks/useSession'
+import { GTM_EVENTS } from '@/utils/constants'
+import { pushDataLayer } from '@/utils/functions'
 import { CSSProperties, useCallback, useEffect, useRef, useState } from 'react'
 import ReactCanvasConfetti from 'react-canvas-confetti'
 
@@ -44,11 +46,20 @@ const PageSoloGame = () => {
   }
 
   const handleSelectButton = (selection: boolean) => {
+    let isRightSelection = false
+
     if ((isDefaultCandidate && selection) || (!isDefaultCandidate && !selection)) {
       fireConfetti()
       incrementPoints()
+      isRightSelection = true
     }
-
+    
+    pushDataLayer(GTM_EVENTS.GAME_SELECTION, {
+      session,
+      attemps,
+      selected_option: generatedCandidate,
+      is_right_selection: isRightSelection
+    })
     incrementAttemps()
   }
 

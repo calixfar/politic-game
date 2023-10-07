@@ -1,8 +1,10 @@
 'use client'
 
 import useSession from '@/hooks/useSession'
+import { GTM_EVENTS } from '@/utils/constants'
+import { pushDataLayer } from '@/utils/functions'
 import Image from 'next/image'
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 
 const gifs = {
   success: 'well-done',
@@ -12,10 +14,26 @@ const gifs = {
 const PageFinish = () => {
   const { session, resetSession } = useSession()
   const result = session.points === 6
+  const wasGameFinishEventDispatched = useRef(false)
 
   const handleStartOverClick = () => {
     resetSession(true)
+
+    pushDataLayer(GTM_EVENTS.GAME_RESTART, {
+      session
+    })
   }
+
+  useEffect(() => {
+    if (!wasGameFinishEventDispatched.current) {
+      pushDataLayer(GTM_EVENTS.GAME_FINISH, {
+        session,
+        won: result
+      })
+
+      wasGameFinishEventDispatched.current = true
+    }
+  }, [])
 
   return (
     <div className="w-full p-4 flex flex-col justify-center">

@@ -4,6 +4,8 @@ import { FormEvent } from "react"
 import { useRouter } from 'next/navigation'
 
 import useSession from "@/hooks/useSession"
+import { pushDataLayer } from "@/utils/functions"
+import { GTM_EVENTS } from "@/utils/constants"
 
 const InitialForm = () => {
   const { changeSessionState } = useSession()
@@ -19,6 +21,10 @@ const InitialForm = () => {
 
       return
     }
+
+    pushDataLayer(GTM_EVENTS.GAME_START, {
+      name
+    })
 
     changeSessionState({ name })
     router.push('/game/solo')
