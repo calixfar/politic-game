@@ -3,14 +3,21 @@
 import { useState } from 'react'
 import ModalHelp from './ModalHelp'
 import SoloCard from './SoloCard'
-import { defaultCandidate } from '@/utils/constants'
+import { GTM_EVENTS, defaultCandidate } from '@/utils/constants'
+import { pushDataLayer } from '@/utils/functions'
+import useSession from '@/hooks/useSession'
 
 const ButtonHelp = () => {
   const [ isModalOpen, setIsModalOpen ] = useState(false)
   const [ seenModalTimes, setSeenModalTimes ] = useState(0)
-  
+  const { session } = useSession()
+
   const handleClick = () => {
     setIsModalOpen(true)
+    pushDataLayer(GTM_EVENTS.GAME_HELP, {
+      session,
+      first_help: seenModalTimes === 0
+    })
   }
   
   const handleClose = () => {
