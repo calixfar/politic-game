@@ -8,7 +8,7 @@ interface Props {
   number: number
   width?: number
   height?: number
-  setIsLoading: (value: boolean) => void
+  setIsLoading?: (value: boolean) => void
 }
 
 const SoloCard = ({
@@ -19,11 +19,17 @@ const SoloCard = ({
   setIsLoading
 }: Props) => {
   const imageUrlCopy = useRef(imageUrl)
+  
+  const executeSetIsLoading = (value: boolean) => {
+    if (setIsLoading) {
+      setIsLoading(value)
+    }
+  }
 
   useEffect(() => {
     if (imageUrl !== imageUrlCopy.current) {
       imageUrlCopy.current = imageUrl
-      setIsLoading(true)
+      executeSetIsLoading(true)
     }
   }, [imageUrl])
 
@@ -35,7 +41,7 @@ const SoloCard = ({
         className="w-1/2 h-full block"
         width={width}
         height={height}
-        onLoadingComplete={() => setIsLoading(false)}
+        onLoadingComplete={() => executeSetIsLoading(false)}
       />
       <p className="font-bold text-gray-600 w-1/2 flex items-center justify-center" style={{fontSize: `${height / 2}px`}}>{number}</p>
     </div>

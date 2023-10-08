@@ -83,6 +83,13 @@ html, body {
   height: 75%;
 }
 
+.inset-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
 @media screen and (max-width: 640px) {
   .main {
     padding: 0;
